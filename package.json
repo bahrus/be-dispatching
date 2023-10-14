@@ -1,6 +1,6 @@
 {
   "name": "be-dispatching",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "keywords": [
     "web-components",
     "web-component",
@@ -30,7 +30,8 @@
     "*.js",
     "types.d.ts"
   ],
-  "types": "types.d.ts",  "scripts": {
+  "types": "types.d.ts",
+  "scripts": {
     "serve": "node node_modules/may-it-serve",
     "test": "playwright test",
     "safari": "npx playwright wk http://localhost:3030",
