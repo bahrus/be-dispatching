@@ -19,6 +19,7 @@ export interface DispatchRule{
     qualifiers?: string,
     dispatch?: string,
     bubbles?: boolean,
+    cancelable?: boolean,
     composed?: boolean,
     replace?: boolean,
 }

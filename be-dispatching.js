@@ -29,6 +29,26 @@ export class BeDispatching extends BE {
     async hydrate(self) {
         const { enhancedElement, dispatchRules } = self;
         for (const rule of dispatchRules) {
+            const abortController = new AbortController();
+            this.#abortControllers.push(abortController);
+            let { dispatchOn } = rule;
+            let eventTar = enhancedElement;
+            if (dispatchOn === undefined) {
+                const { getDefaultSignalInfo } = await import('be-linked/getDefaultSignalInfo.js');
+                const signalInfo = getDefaultSignalInfo(enhancedElement);
+                dispatchOn = signalInfo.type;
+                eventTar = signalInfo.eventTarget;
+            }
+            eventTar.addEventListener(dispatchOn, e => {
+                const { replace, bubbles, composed, cancelable, dispatch } = rule;
+                if (replace) {
+                    e.stopImmediatePropagation();
+                    e.stopPropagation();
+                }
+                enhancedElement.dispatchEvent(new CustomEvent(dispatch, {
+                    bubbles, composed, cancelable
+                }));
+            }, { signal: abortController.signal });
         }
         const { nudge } = await import('trans-render/lib/nudge.js');
         nudge(enhancedElement);
