@@ -6,6 +6,11 @@ export interface EndUserProps extends IBE{
     Of?: Array<DispatchStatement>
 }
 
+export interface AllProps extends EndUserProps{
+    isParsed?: boolean,
+    dispatchRules?: Array<DispatchRule>
+}
+
 export type DispatchStatement = string;
 
 export interface DispatchRule{
@@ -16,3 +21,11 @@ export interface DispatchRule{
     composed?: boolean,
     replace?: boolean,
 }
+
+export type AP = AllProps;
+
+export type PAP = Partial<AP>;
+
+export type ProPAP = Promise<PAP>;
+
+export type POA = [PAP | undefined, ActionOnEventConfigs<PAP, Actions>];
