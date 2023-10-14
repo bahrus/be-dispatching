@@ -1,6 +1,6 @@
 # be-dispatching [TODO]
 
-better syntax than be-composed
+Dispatch event from enhanced element with specified name.
 
 ```html
 <input be-composed='{
@@ -19,5 +19,5 @@ better syntax than be-composed
 becomes:
 
 ```html
-<input be-dispatching='of bubbling, composed, cancelable, propagation-stopping event 402735ed-b9e8-4ef4-9e0d-3a6b385de863 on change.'>
+<input be-dispatching='of bubbling, composed, cancelable, replacing event 402735ed-b9e8-4ef4-9e0d-3a6b385de863 on change.'>
 ```
