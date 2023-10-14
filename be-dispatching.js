@@ -57,6 +57,7 @@ const xe = new XE({
             },
             hydrate: 'dispatchRules'
         }
-    }
+    },
+    superclass: BeDispatching,
 });
 register(ifWantsToBe, upgrade, tagName);

@@ -17,7 +17,7 @@ export interface DispatchRule{
     dispatchOn?: string,
     dispatchOnPropChange?: string,
     qualifiers?: string,
-    eventType?: string,
+    dispatch?: string,
     bubbles?: boolean,
     composed?: boolean,
     replace?: boolean,

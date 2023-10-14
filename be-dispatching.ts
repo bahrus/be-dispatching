@@ -66,7 +66,8 @@ const xe = new XE<AP, Actions>({
             },
             hydrate: 'dispatchRules'
         }
-    }
+    },
+    superclass: BeDispatching,
 });
 
 register(ifWantsToBe, upgrade, tagName);
