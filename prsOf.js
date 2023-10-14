@@ -32,7 +32,7 @@ export function prsOf(self) {
                 test[prop] = true;
             }
         }
-        console.log({ test });
+        //console.log({test});
         dispatchRules.push(test);
     }
     return dispatchRules;

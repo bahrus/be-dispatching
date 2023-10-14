@@ -36,7 +36,7 @@ export function prsOf(self: AP) : Array<DispatchRule>{
                 (<any>test)[prop] = true;
             }
         }
-        console.log({test});
+        //console.log({test});
         dispatchRules.push(test);
     }
     return dispatchRules;
