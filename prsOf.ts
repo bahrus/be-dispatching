@@ -2,12 +2,16 @@ import {AP, ProPAP, PAP, DispatchRule} from './types';
 import {RegExpOrRegExpExt} from 'be-enhanced/types';
 import {tryParse} from 'be-enhanced/cpu.js';
 
-const localEvent = String.raw `(?<!\\)On(?<localEvent>[\w]+)`;
+const dispatchOn = String.raw `(?<!\\)On(?<dispatchOn>[\w]+)`;
 const dispatchEvent = String.raw `(?<!\\)Event(?<dispatch>.*)`;
 const qualifiers = String.raw `(?<qualifiers>[\w\,]+)`
 const reOfDispatchingRule: Array<RegExpOrRegExpExt<Partial<DispatchRule>>> = [
     {
-        regExp: new RegExp(String.raw `^${qualifiers}${dispatchEvent}${localEvent}`),
+        regExp: new RegExp(String.raw `^${qualifiers}${dispatchEvent}${dispatchOn}`),
+        defaultVals:{}
+    },
+    {
+        regExp: new RegExp(String.raw `^${qualifiers}${dispatchEvent}`),
         defaultVals:{}
     }
 ];
