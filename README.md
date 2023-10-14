@@ -10,13 +10,26 @@ Dispatch event from enhanced element with specified name.
 ## Example 1
 
 ```html
-<input be-dispatching='of bubbling, composed, cancelable, replacing event 402735ed-b9e8-4ef4-9e0d-3a6b385de863 on change.'>
+<input be-dispatching='
+  of 
+    bubbling, 
+    composed, 
+    cancelable, 
+    replacing 
+  event 402735ed-b9e8-4ef4-9e0d-3a6b385de863 
+  on change.'>
 ```
 
 ## Example 2
 
 ```html
-<input be-dispatching='of bubbling, composed, cancelable, replacing event 402735ed-b9e8-4ef4-9e0d-3a6b385de863.'>
+<input be-dispatching='
+    of 
+        bubbling, 
+        composed, 
+        cancelable, 
+        replacing 
+    event 402735ed-b9e8-4ef4-9e0d-3a6b385de863.'>
 ```
 
 Dispatches on input event by default.
