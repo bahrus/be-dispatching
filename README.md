@@ -1,4 +1,4 @@
-# be-dispatching
+# be-dispatching (📡)
 
 Dispatch event from enhanced element with specified name.
 
