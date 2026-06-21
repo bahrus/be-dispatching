@@ -1,6 +1,6 @@
 {
   "name": "be-dispatching",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "keywords": [
     "web-components",
     "web-component",
@@ -11,25 +11,27 @@
   "main": "be-dispatching.js",
   "module": "be-dispatching.js",
   "dependencies": {
-    "be-enhanced": "0.0.188",
-    "be-hive": "0.0.266",
-    "mount-observer": "0.0.102",
-    "trans-render": "0.0.958"
+    "be-hive": "0.1.14",
+    "mount-observer": "0.1.40",
+    "roundabout-lib": "0.0.21",
+    "nested-regex-groups": "0.0.6"
   },
   "devDependencies": {
-    "@playwright/test": "1.55.0",
-    "spa-ssi": "0.0.12"
+    "@playwright/test": "1.60.0",
+    "spa-ssi": "0.0.27"
   },
   "exports": {
     ".": "./be-dispatching.js",
-    "./be-dispatching.js": "./be-dispatching.js"
+    "./be-dispatching.js": "./be-dispatching.js",
+    "./📡.js": "./📡.js"
   },
   "files": [
     "*.js",
     "types.d.ts"
   ],
-  "types": "types.d.ts",
+  "types": "./types/be-dispatching/types.d.ts",
   "scripts": {
+    "build": "node emc.mjs > emc.json && node 📡.mjs > 📡.json",
     "serve": "node ./node_modules/spa-ssi/serve.js",
     "test": "playwright test",
     "safari": "npx playwright wk http://localhost:8000",

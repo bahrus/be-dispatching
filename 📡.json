@@ -1,0 +1,46 @@
+{
+    "enhConfig": {
+        "enhKey": "📡",
+        "spawn": "be-dispatching/be-dispatching.js",
+        "withAttrs": {
+            "base": "📡",
+            "_base": {
+                "mapsTo": "crudeDispatchRules",
+                "parser": "parse-pattern-statements",
+                "instanceOf": "Array",
+                "parserConfig": [
+                    {
+                        "name": "qualifiersDispatchOn",
+                        "pattern": "^(?:o|O)f (?<qualifiers>[\\s\\S]*?) event (?<dispatch>[\\S]+) on (?<dispatchOn>[\\w]+)",
+                        "description": "Of qualifiers event name on eventType: of bubbling, composed event myEvent on change",
+                        "defaultVals": {}
+                    },
+                    {
+                        "name": "qualifiersDispatch",
+                        "pattern": "^(?:o|O)f (?<qualifiers>[\\s\\S]*?) event (?<dispatch>[\\S]+)",
+                        "description": "Of qualifiers event name: of bubbling, composed event myEvent",
+                        "defaultVals": {}
+                    }
+                ]
+            }
+        }
+    },
+    "customData": {
+        "weakRef": {
+            "properties": [
+                "enhancedElement"
+            ]
+        },
+        "actions": {
+            "hydrate": {
+                "ifAllOf": [
+                    "dispatchRules",
+                    "enhancedElement"
+                ]
+            }
+        },
+        "compacts": {
+            "when_crudeDispatchRules_changes_call_finishParsing": 0
+        }
+    }
+}

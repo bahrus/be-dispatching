@@ -1,80 +1,118 @@
 // @ts-check
-import { propInfo, rejected, resolved } from 'be-enhanced/cc.js';
-import { BE } from 'be-enhanced/BE.js';
-import {dispatchEvent as de} from 'trans-render/positractions/dispatchEvent.js';
-/** @import {BEConfig, IEnhancement, BEAllProps} from './ts-refs/be-enhanced/types.d.ts' */
-/** @import {Actions, PAP, AllProps, AP, BAP, DispatchRule} from './ts-refs/be-dispatching/types' */;
+/** @import {Actions, PAP, AllProps, AP, DispatchRule} from './types/be-dispatching/types' */;
+/** @import {RoundaboutOptions} from './types/roundabout/types' */;
+/** @import {ElementEnhancementGateway, SpawnContext} from './types/assign-gingerly/types' */;
+/** @import {EMC} from './types/mount-observer/types' */;
+/** @import {RAConfig} from './types/roundabout/types' */;
 
 /**
  * @implements {Actions}
-
  */
-class BeDispatching extends BE {
+class BeDispatching {
 
     /**
-     * @type {BEConfig<AP & BEAllProps, Actions & IEnhancement>}
+     * @this {AllProps & Actions}
+     * @param {Element & ElementEnhancementGateway} enhancedElement
+     * @param {SpawnContext} ctx
+     * @param {PAP} initVals
      */
-    static config = {
-        propInfo: {
-            ...propInfo,
-            crudeDispatchRules:{},
-            dispatchRules:{},
-        },
-        positractions: [resolved, rejected],
-        compacts:{
-            when_crudeDispatchRules_changes_call_finishParsing: 0,
-            when_dispatchRules_changes_call_hydrate: 0,
-        }
+    constructor(enhancedElement, ctx, initVals) {
+        this.init(this, enhancedElement, ctx, initVals);
     }
 
-    de = de;
+    /**
+     * @param {AllProps} self
+     * @param {Element & ElementEnhancementGateway} enhancedElement
+     * @param {SpawnContext} ctx
+     * @param {PAP} initVals
+     */
+    async init(self, enhancedElement, ctx, initVals) {
+        const {customData} = /** @type {EMC<any, AllProps, Element, RAConfig<AllProps, Actions>>} */ (ctx.emc);
+        /** @type {RoundaboutOptions} */
+        const raOptions = {
+            ...customData,
+            vm: self,
+            initialPropVals: {
+                enhancedElement,
+                ...customData?.defaultPropVals,
+                ...initVals
+            }
+        };
+        (await import('roundabout-lib/roundabout.js')).roundabout(raOptions);
+    }
 
     /**
-     * 
-     * @param {BAP} self 
-     * @returns 
+     * Parse crude dispatch rules into structured DispatchRule objects.
+     * @param {AP} self
+     * @returns {PAP}
      */
-    finishParsing(self){
+    finishParsing(self) {
         const {crudeDispatchRules} = self;
+        if (!crudeDispatchRules) return {};
+        const {statements, success} = crudeDispatchRules;
+        if (!success || !statements) return {};
+
         /** @type {DispatchRule[]} */
         const dispatchRules = [];
-        for(const cdr of crudeDispatchRules) {
-            const {qualifiers} = cdr;
-            const dispatchRule = /** @type {DispatchRule} */ ({...cdr});
-            dispatchRules.push(dispatchRule);
-            const quals = qualifiers.split(',').map(q=>q.trim()).filter(q=>q.length > 0);
-            for(const q of quals) {
-                if(q === 'bubbling') {
-                    dispatchRule.bubbles = true;
-                    continue;
+        for (const statement of statements) {
+            const {value} = statement;
+            if (!value) continue;
+            const dispatchRule = /** @type {DispatchRule} */ ({...value});
+            const {qualifiers} = dispatchRule;
+            if (qualifiers) {
+                const quals = qualifiers.split(',').map(q => q.trim()).filter(q => q.length > 0);
+                for (const q of quals) {
+                    if (q === 'bubbling') {
+                        dispatchRule.bubbles = true;
+                        continue;
+                    }
+                    /** @type {any} */ (dispatchRule)[q] = true;
                 }
-                /** @type {any} */(dispatchRule)[q] = true;
             }
+            dispatchRules.push(dispatchRule);
         }
-        
+
         return /** @type {PAP} */ ({
             dispatchRules
         });
     }
 
+    /** @type {AbortController | undefined} */
+    #ac;
+
     /**
-     * 
-     * @param {BAP} self 
-     * @returns 
+     * Set up event listeners for each dispatch rule.
+     * @param {AP} self
+     * @returns {Promise<PAP>}
      */
     async hydrate(self) {
         const {dispatchRules, enhancedElement} = self;
-        const {Dispatcher} = await import('./Dispatcher.js');
-        for(const rule of dispatchRules) {
-            new Dispatcher(self, rule);
+        if (!dispatchRules) return {};
+
+        if (this.#ac) this.#ac.abort();
+        this.#ac = new AbortController();
+        const signal = this.#ac.signal;
+
+        for (const rule of dispatchRules) {
+            const {dispatchOn, dispatch, bubbles, cancelable, composed, replace} = rule;
+            const eventToListenFor = dispatchOn || 'input';
+
+            enhancedElement.addEventListener(eventToListenFor, (evt) => {
+                if (replace) {
+                    evt.stopPropagation();
+                }
+                enhancedElement.dispatchEvent(new Event(dispatch, {
+                    bubbles: !!bubbles,
+                    cancelable: !!cancelable,
+                    composed: !!composed
+                }));
+            }, {signal});
         }
+
         return /** @type {PAP} */ ({
             resolved: true,
         });
     }
-
-
 }
 
-await BeDispatching.bootUp();
-export { BeDispatching };
+export {BeDispatching};
