@@ -11,13 +11,13 @@
   "main": "be-dispatching.js",
   "module": "be-dispatching.js",
   "dependencies": {
-    "be-hive": "0.1.14",
-    "mount-observer": "0.1.40",
-    "roundabout-lib": "0.0.21",
-    "nested-regex-groups": "0.0.6"
+    "be-hive": "0.1.15",
+    "mount-observer": "0.1.43",
+    "roundabout-lib": "0.0.28",
+    "nested-regex-groups": "0.0.7"
   },
   "devDependencies": {
-    "@playwright/test": "1.60.0",
+    "@playwright/test": "1.62.0",
     "spa-ssi": "0.0.27"
   },
   "exports": {
