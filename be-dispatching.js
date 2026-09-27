@@ -27,7 +27,7 @@ class BeDispatching {
      * @param {PAP} initVals
      */
     async init(self, enhancedElement, ctx, initVals) {
-        const {customData} = /** @type {EMC<any, AllProps, Element, RAConfig<AllProps, Actions>>} */ (ctx.emc);
+        const {customData} = /** @type {EMC<any, AllProps, Element, RAConfig<AllProps, Actions>>} */ (ctx.emc || ctx.config);
         /** @type {RoundaboutOptions} */
         const raOptions = {
             ...customData,
@@ -38,7 +38,8 @@ class BeDispatching {
                 ...initVals
             }
         };
-        (await import('roundabout-lib/roundabout.js')).roundabout(raOptions);
+        await (await import('roundabout-lib/roundabout.js')).roundabout(raOptions);
+        self.initialized = true;
     }
 
     /**
@@ -64,6 +65,10 @@ class BeDispatching {
                 for (const q of quals) {
                     if (q === 'bubbling') {
                         dispatchRule.bubbles = true;
+                        continue;
+                    }
+                    if (q === 'replacing') {
+                        dispatchRule.replace = true;
                         continue;
                     }
                     /** @type {any} */ (dispatchRule)[q] = true;

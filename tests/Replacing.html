@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Replacing</title>
+    <!-- #include virtual="/imports.html" -->
+    <script type=module>
+        import 'be-hive/be-hive.js';
+    </script>
+</head>
+<body>
+    <be-hive>
+        <script type=emc-parser 
+                src="be-hive/parsers/parse-pattern-statements.js" 
+                parser-name=parse-pattern-statements></script>
+        <script type=emc 
+                src="be-dispatching/emc.json" 
+                wait-for-parsers=parse-pattern-statements></script>
+    </be-hive>
+    <div id=container>
+        <input id=input be-dispatching="of bubbling, replacing event my-event on change">
+    </div>
+    <output id=log></output>
+    <div id=target></div>
+    <script type=module>
+        // show which events reach the container
+        container.addEventListener('my-event', () => log.value += 'my-event heard. ');
+        container.addEventListener('change', () => log.value += 'change heard. ');
+
+        setTimeout(() => {
+            input.dispatchEvent(new Event('change', {bubbles: true}));
+            setTimeout(() => {
+                if(log.value === 'my-event heard. ') target.setAttribute('mark', 'good');
+            }, 200);
+        }, 1000);
+    </script>
+</body>
+</html>

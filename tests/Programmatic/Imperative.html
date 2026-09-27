@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmatic imperative</title>
+    <!-- #include virtual="/imports.html" -->
+</head>
+<body>
+    <div id=container>
+        <input id=input>
+    </div>
+    <output id=log></output>
+    <div id=target></div>
+    <script type=module>
+        import {defBeDispatching} from '/def.js';
+        // show which events reach the container
+        container.addEventListener('my-event', () => log.value += 'my-event heard. ');
+        container.addEventListener('change', () => log.value += 'change heard. ');
+        const emc = await defBeDispatching(document.body);
+        const beDispatching = input.enh.get(emc);
+        // equivalent to <input be-dispatching="of bubbling, replacing event my-event on change">
+        beDispatching.dispatchRules = [
+            {dispatch: 'my-event', dispatchOn: 'change', bubbles: true, replace: true}
+        ];
+
+        setTimeout(() => {
+            input.dispatchEvent(new Event('change', {bubbles: true}));
+            setTimeout(() => {
+                if(log.value === 'my-event heard. ') target.setAttribute('mark', 'good');
+            }, 200);
+        }, 1000);
+    </script>
+</body>
+</html>

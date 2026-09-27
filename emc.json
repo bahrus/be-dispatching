@@ -1,6 +1,6 @@
 {
     "enhConfig": {
-        "enhKey": "be-dispatching",
+        "enhKey": "beDispatching",
         "spawn": "be-dispatching/be-dispatching.js",
         "withAttrs": {
             "base": "be-dispatching",
@@ -33,9 +33,14 @@
         },
         "actions": {
             "hydrate": {
+                "ifKeyIn": [
+                    "dispatchRules",
+                    "initialized"
+                ],
                 "ifAllOf": [
                     "dispatchRules",
-                    "enhancedElement"
+                    "enhancedElement",
+                    "initialized"
                 ]
             }
         },

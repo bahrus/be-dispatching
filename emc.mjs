@@ -26,7 +26,7 @@ const parsePatterns = [
  */
 export const emc = {
     enhConfig: {
-        enhKey: 'be-dispatching',
+        enhKey: 'beDispatching',
         spawn: 'be-dispatching/be-dispatching.js',
         withAttrs: {
             base: 'be-dispatching',
@@ -44,9 +44,14 @@ export const emc = {
         },
         actions: {
             hydrate: {
-                ifAllOf: ['dispatchRules', 'enhancedElement']
+                ifKeyIn: ['dispatchRules', 'initialized'],
+                ifAllOf: ['dispatchRules', 'enhancedElement', 'initialized']
             }
         },
+        // Transfers the attribute-parsed `crudeDispatchRules` into
+        // `dispatchRules` — the property `hydrate` actually reads.
+        // Programmatic callers skip `crudeDispatchRules` entirely and assign
+        // `dispatchRules` directly.
         compacts: {
             when_crudeDispatchRules_changes_call_finishParsing: 0,
         }

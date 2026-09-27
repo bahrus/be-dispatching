@@ -11,6 +11,7 @@
   "main": "be-dispatching.js",
   "module": "be-dispatching.js",
   "dependencies": {
+    "assign-gingerly": "0.0.97",
     "be-hive": "0.1.18",
     "mount-observer": "0.1.53",
     "roundabout-lib": "0.0.38",
@@ -23,10 +24,13 @@
   "exports": {
     ".": "./be-dispatching.js",
     "./be-dispatching.js": "./be-dispatching.js",
-    "./📡.js": "./📡.js"
+    "./def.js": "./def.js",
+    "./emc.json": "./emc.json",
+    "./📡.json": "./📡.json"
   },
   "files": [
     "*.js",
+    "*.json",
     "types.d.ts"
   ],
   "types": "./types/be-dispatching/types.d.ts",

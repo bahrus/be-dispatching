@@ -33,9 +33,14 @@
         },
         "actions": {
             "hydrate": {
+                "ifKeyIn": [
+                    "dispatchRules",
+                    "initialized"
+                ],
                 "ifAllOf": [
                     "dispatchRules",
-                    "enhancedElement"
+                    "enhancedElement",
+                    "initialized"
                 ]
             }
         },
